@@ -1,0 +1,57 @@
+# draft from murra:
+# snapcraft requires a yaml file for configuration
+# to be tested still and needs further studying
+
+name: tsunami
+version: 0.0.1
+grade: alpha
+summary: Tsunami streaming
+description: |
+  Tsunami is a Qt application based on libtorrent with innovative features 
+  like Streaming, Search and Intelligent Auto-Sharing
+confinement: strict
+
+apps:
+  tsunami:
+    command: 
+    plugs: 
+    desktop: 
+    environment:
+  cli:
+    command: 
+    plugs: 
+  proxy:
+    command: 
+    plugs: 
+
+parts:
+  tsunami:
+    source: .
+    plugin: cmake
+    configflags:
+      - -DCMAKE_BUILD_TYPE=Release
+      - -DCMAKE_INSTALL_PREFIX=/usr
+      - -DKEEPASSXC_DIST_TYPE=Snap
+      - -DKEEPASSXC_BUILD_TYPE=PreRelease
+      - -DWITH_TESTS=OFF
+      - -DWITH_XC_ALL=ON
+    build-packages:
+      - g++
+      - libboost-devel
+      - libboost1.65-tools-dev
+      - libboost-system1.65-dev
+      - libvlccore-dev
+      - libvlc-dev
+      - qtdeclarative5-dev
+      - qtdeclarative5-dev-tools
+      - libqt5websockets5-dev
+      - libat5script5
+      - libqt5scripttools5
+      - qtscript5-dev
+    stage-packages:
+    override-build: |
+      snapcraftctl build
+    organize:
+    stage:
+      - -opt
+after: [desktop-qt5]
